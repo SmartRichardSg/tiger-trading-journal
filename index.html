@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Tiger Trading Journal</title>
+<style>
+:root{--ink:#20242a;--muted:#68717d;--line:#d9dee5;--blue:#1976ff;--green:#16a34a;--bg:#f6f8fb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);font-size:16px}
+.wrap{max-width:720px;margin:auto;padding:18px 12px 36px}.top{background:white;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid var(--line)}
+h1{font-size:27px;margin:0 0 4px}.sub{color:var(--muted);font-weight:600}.id{margin-top:10px;color:var(--muted);font-size:13px}
+.card{background:white;border:1px solid var(--line);border-radius:16px;margin:12px 0;overflow:hidden}.head{padding:11px 14px;font-weight:800;font-size:19px;background:#eef4ff}.green{background:#ecfdf3}.yellow{background:#fff8df}.purple{background:#f6efff}.red{background:#fff0f2}.body{padding:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-weight:700;font-size:14px;margin-bottom:5px}
+input,select,textarea{width:100%;border:1px solid #bcc5d0;border-radius:9px;padding:11px;font:inherit;background:#fff}textarea{min-height:76px;resize:vertical}
+.row{display:grid;grid-template-columns:45px 1fr 1fr 1fr;gap:8px;align-items:end;margin-bottom:10px}.ticker{font-weight:900;font-size:18px;padding-bottom:10px}
+.full{margin-top:10px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+button{border:0;border-radius:11px;padding:13px 10px;font-weight:800;font-size:15px;background:#e9eef5;color:#17202a}
+button.primary{background:var(--blue);color:white}button.save{background:var(--green);color:white}button.danger{background:#fee2e2;color:#991b1b}
+.small{font-size:12px;color:var(--muted);margin-top:6px}.records{max-height:240px;overflow:auto}.record{border-bottom:1px solid var(--line);padding:10px 0}.record button{padding:7px 9px;font-size:12px}
+.note{background:#f8fafc;border-radius:10px;padding:10px;color:var(--muted);font-size:13px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.row{grid-template-columns:44px 1fr 1fr}.row .action{grid-column:2}.wrap{padding:10px 9px 28px}h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><h1>📝 Tiger Trading Journal</h1><div class="sub">ES3 – G3B Two ETF Decision Record</div><div class="id">Record ID: <strong id="recordId">new</strong></div></header>
+
+<section class="card"><div class="head">1. Basic Information</div><div class="body"><div class="grid">
+<div><label>Date</label><input id="date" type="date"></div><div><label>Market Direction</label><select id="market"><option value="">Select</option><option>UP</option><option>NEUTRAL</option><option>DOWN</option></select></div>
+</div></div></section>
+
+<section class="card"><div class="head">2. 10 AM Decision (Plan)</div><div class="body">
+<div class="row"><div class="ticker">ES3</div><div><label>Signal</label><select id="es3Signal"><option>Support</option><option>Neutral</option><option>Resistance</option><option>Breakout</option><option>Breakdown</option></select></div><div><label>Price</label><input id="es3PlanPrice" inputmode="decimal"></div><div class="action"><label>Action</label><select id="es3PlanAction"><option>Hold</option><option>Buy</option><option>Sell</option></select></div></div>
+<div class="row"><div class="ticker">G3B</div><div><label>Signal</label><select id="g3bSignal"><option>Support</option><option>Neutral</option><option>Resistance</option><option>Breakout</option><option>Breakdown</option></select></div><div><label>Price</label><input id="g3bPlanPrice" inputmode="decimal"></div><div class="action"><label>Action</label><select id="g3bPlanAction"><option>Hold</option><option>Buy</option><option>Sell</option></select></div></div>
+<div class="grid"><div><label>ES3 Quantity</label><input id="es3PlanQty" inputmode="numeric"></div><div><label>G3B Quantity</label><input id="g3bPlanQty" inputmode="numeric"></div></div>
+<div class="full"><label>Reason / Comments</label><textarea id="planReason" placeholder="Why am I making this plan?"></textarea></div>
+</div></section>
+
+<section class="card"><div class="head green">3. 3 PM Review</div><div class="body">
+<label>What changed since 10 AM?</label><textarea id="reviewChange" placeholder="Market movement, ES3/G3B behaviour, or anything important..."></textarea>
+<div class="grid" style="margin-top:10px"><div><label>ES3 Action</label><select id="es3ReviewAction"><option>Hold</option><option>Buy</option><option>Sell</option></select></div><div><label>ES3 Actual Price</label><input id="es3ReviewPrice" inputmode="decimal"></div><div><label>ES3 Quantity</label><input id="es3ReviewQty" inputmode="numeric"></div><div><label>G3B Action</label><select id="g3bReviewAction"><option>Hold</option><option>Buy</option><option>Sell</option></select></div><div><label>G3B Actual Price</label><input id="g3bReviewPrice" inputmode="decimal"></div><div><label>G3B Quantity</label><input id="g3bReviewQty" inputmode="numeric"></div></div>
+</div></section>
+
+<section class="card"><div class="head yellow">4. Market Close Result</div><div class="body">
+<div class="grid"><div><label>Overall Result</label><select id="result"><option>Neutral</option><option>Profit</option><option>Loss</option><option>No Trade</option></select></div><div><label>Estimated P&amp;L (SGD)</label><input id="pnl" inputmode="decimal"></div></div>
+<div class="grid" style="margin-top:10px"><div><label>What went right?</label><textarea id="right" placeholder="What worked?"></textarea></div><div><label>What went wrong?</label><textarea id="wrong" placeholder="What didn't work?"></textarea></div></div>
+<div class="full"><label>Lesson for Next Time</label><textarea id="lesson" placeholder="One useful lesson..."></textarea></div>
+</div></section>
+
+<section class="card"><div class="head purple">5. General Comments / Notes</div><div class="body"><textarea id="notes" placeholder="General market thoughts, observations, reminders..."></textarea></div></section>
+
+<section class="card"><div class="head red">6. Save / Retrieve / Edit</div><div class="body">
+<div class="grid"><div><label>Edit Key (optional)</label><input id="editKey" inputmode="numeric" placeholder="e.g. 8888"></div><div><label>Retrieve by Date</label><input id="retrieveDate" type="date"></div></div>
+<div class="buttons"><button class="save" onclick="saveRecord()">💾 SAVE RECORD</button><button class="primary" onclick="saveAndNew()">🆕 SAVE &amp; NEW</button></div>
+<div class="buttons"><button onclick="retrieveRecord()">🔎 RETRIEVE / EDIT</button><button onclick="newRecord()">➕ NEW RECORD</button></div>
+<div class="small">Records are stored locally in this browser. Use Backup / Restore to protect against phone/browser data loss.</div>
+</div></section>
+
+<section class="card"><div class="head">7. Backup / Restore</div><div class="body"><div class="buttons">
+<button onclick="backup()">⬇️ BACKUP RECORDS</button><label style="margin:0"><input id="restoreFile" type="file" accept=".json" onchange="restore(event)" style="padding:8px">Restore JSON</label>
+</div></div></section>
+
+<section class="card"><div class="head">Saved Records</div><div class="body"><input id="search" placeholder="Search date, notes, ES3, G3B..." oninput="renderRecords"><div id="records" class="records"></div></div></section>
+</div>
+<script>
+const KEY='tigerTradingJournal.v1';let editingId=null;
+const ids=['date','market','es3Signal','es3PlanPrice','es3PlanAction','g3bSignal','g3bPlanPrice','g3bPlanAction','es3PlanQty','g3bPlanQty','planReason','reviewChange','es3ReviewAction','es3ReviewPrice','es3ReviewQty','g3bReviewAction','g3bReviewPrice','g3bReviewQty','result','pnl','right','wrong','lesson','notes','editKey'];
+function today(){return new Date().toISOString().slice(0,10)}
+function getRecords(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}
+function dataFromForm(){let o={};ids.forEach(id=>o[id]=document.getElementById(id).value);o.id=editingId||Date.now().toString();o.savedAt=new Date().toISOString();return o}
+function setForm(o){ids.forEach(id=>document.getElementById(id).value=o[id]??'');editingId=o.id;document.getElementById('recordId').textContent=o.id}
+function saveRecord(){const o=dataFromForm(),a=getRecords(),i=a.findIndex(x=>x.id===o.id);if(i>=0)a[i]=o;else a.unshift(o);localStorage.setItem(KEY,JSON.stringify(a));editingId=o.id;document.getElementById('recordId').textContent=o.id;renderRecords();alert('Record saved on this phone.')}
+function saveAndNew(){saveRecord();setTimeout(newRecord,100)}
+function newRecord(){editingId=null;ids.forEach(id=>{const e=document.getElementById(id);if(id==='date')e.value=today();else if(e.tagName==='SELECT')e.selectedIndex=0;else e.value=''});document.getElementById('recordId').textContent='new'}
+function retrieveRecord(){const d=document.getElementById('retrieveDate').value,k=document.getElementById('editKey').value.trim(),a=getRecords();let x=a.find(r=>(d?r.date===d:true)&&(k?r.editKey===k:true));if(!x&&d)x=a.find(r=>r.date===d);if(x){setForm(x);alert('Record loaded. Edit and save it.')}else alert('No matching record found.')}
+function renderRecords(){const q=(document.getElementById('search')?.value||'').toLowerCase(),a=getRecords().filter(x=>JSON.stringify(x).toLowerCase().includes(q));document.getElementById('records').innerHTML=a.length?a.map(x=>'<div class="record"><strong>'+x.date+'</strong> · '+(x.market||'—')+' · '+(x.result||'—')+'<br><span class="small">ES3: '+(x.es3PlanAction||'—')+' '+(x.es3PlanPrice||'')+' · G3B: '+(x.g3bPlanAction||'—')+' '+(x.g3bPlanPrice||'')+'</span><br><button onclick="loadById(\''+x.id+'\')">✏️ Edit</button> <button class="danger" onclick="deleteById(\''+x.id+'\')">Delete</button></div>').join(''):'<div class="note">No saved records yet.</div>'}
+function loadById(id){const x=getRecords().find(r=>r.id===id);if(x){setForm(x);scrollTo({top:0,behavior:'smooth'})}}
+function deleteById(id){if(confirm('Delete this record?')){localStorage.setItem(KEY,JSON.stringify(getRecords().filter(x=>x.id!==id)));renderRecords()}}
+function backup(){const b=new Blob([JSON.stringify(getRecords(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='tiger-trading-journal-backup-'+today()+'.json';a.click()}
+function restore(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x))throw 0;localStorage.setItem(KEY,JSON.stringify(x));renderRecords();alert('Backup restored.')}catch{alert('Invalid backup file.')}};r.readAsText(f)}
+document.getElementById('date').value=today();renderRecords();document.getElementById('search').addEventListener('input',renderRecords);
+</script>
+</body></html>
